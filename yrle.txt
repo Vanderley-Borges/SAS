@@ -1,0 +1,95 @@
+Estimar comonentes de variancia:
+
+data dentro;
+input progenie bloco@;
+do plantas=1 to 6;
+input PRODUCAO@;
+output;
+end;
+cards;
+1 1 1.12 8.00 1.12
+1 1 1.10 9.00 1.23
+1 1 1.31 10.00 0.96
+1 1 1.60 7.00 1.09
+1 1 0.71 11.00 1.18
+1 1 0.80 9.00 .
+2 1 1.82 7.00 1.00
+2 1 1.43 7.00 0.99
+2 1 1.12 9.00 1.27
+2 1 0.80 12.00 1.15
+2 1 1.00 11.00 0.92
+2 1 0.90 9.00  .
+3 1 0.70 11.00 1.09
+3 1 0.75 11.00 .
+3 1 0.63 15.00 .
+3 1 1.14 12.00 0.85
+3 1 0.47 11.00 1.33
+3 1 0.40 10.00 0.98
+4 1 1.94 10.00 1.52
+4 1 2.00 15.00 1.85
+4 1 1.93 15.00 1.87
+4 1 0.89 11.00 1.25
+4 1 1.43 11.00 1.33
+4 1 1.40 13.00 .
+1 2 1.40 11.00 1.15
+1 2 1.32 10.00 1.17
+1 2 1.25 12.00 1.11
+1 2 1.30 14.00 1.45
+1 2 1.80 13.00 1.78
+1 2 1.96 13.00 1.44
+2 2 1.50 10.00 1.55
+2 2 1.32 11.00 1.24
+2 2 1.63 14.00 1.43
+2 2 1.53 13.00 0.95
+2 2 1.46 11.00 1.08
+2 2 1.33 10.00 1.37
+3 2 0.82 10.00 0.69
+3 2 0.56 12.00 1.29
+3 2 0.67 11.00 0.74
+3 2 0.42 10.00 1.06
+3 2 0.40 10.00 .
+3 2 0.60 8.00  1.11
+4 2 1.87 11.00 1.22
+4 2 1.22 14.00 1.50
+4 2 1.40 12.00 1.42
+4 2 1.66 16.00 1.65
+4 2 1.87 17.00 1.78
+4 2 1.75 17.00 2.01
+;
+proc glm;
+title 'Análise de variância I';
+class bloco progenie;
+model PRODUCAO = progenie bloco
+progenie*bloco;
+random progenie bloco progenie*bloco/test;
+run;
+proc mixed;
+title 'Análise de variância II';
+class bloco progenie;
+model PRODUCAO =;
+random progenie bloco progenie*bloco;
+run;
+proc varcomp method=type1;
+title 'Método dos momentos';
+class bloco progenie;
+model PRODUCAO = progenie bloco
+progenie*bloco;
+run;
+proc varcomp method=mivque0;
+title 'Estimador não-viesado de variância mínima';
+class bloco progenie;
+model PRODUCAO = progenie bloco
+progenie*bloco;
+run;
+proc varcomp method=ml;
+title 'Estimador de máxima verossimilhança';
+class bloco progenie;
+model PRODUCAO = progenie bloco
+progenie*bloco;
+run;
+proc varcomp method=reml;
+title 'Estimador de máx. veros. restrita';
+class bloco progenie;
+model PRODUCAO = progenie bloco
+progenie*bloco;
+run;
