@@ -1,0 +1,48 @@
+/* Exemplo da utilização do Proc Anova para realizar testes de homogeneidade de vari
+âncias. Uso de Recursos Computacionais-Daniel Furtado Ferreira*/
+data dic;
+input racoes gp @@;
+cards;
+1 35 1 19 1 31
+1 15 1 30 2 40
+2 35 2 46 2 41
+2 33 3 39 3 27
+3 20 3 29 3 45
+4 27 4 12 4 13
+4 28 4 30
+;
+proc anova;
+class racoes;
+model gp=racoes;
+means racoes / hovtest=levene(type=abs);
+run; quit; /* fim do programa */
+/* Exemplo da utilização do Proc Anova*/
+data dic;
+input racoes gp;
+cards;
+1 35
+1 19
+1 31
+1 15
+1 30
+2 40
+2 35
+2 46
+2 41
+2 33
+3 39
+3 27
+3 20
+3 29
+3 45
+4 27
+4 12
+4 13
+4 28
+4 30
+;
+proc anova;
+class racoes;
+model gp=racoes;
+means racoes / snk alpha=0.05 lines;
+run; quit; /* fim do programa */
