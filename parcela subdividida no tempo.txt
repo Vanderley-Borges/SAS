@@ -1,0 +1,31 @@
+/* Programa para realizar análise de variância de um modelo contendo múltiplos erros.
+O modelo escolhido foi o de parcela subdividida no tempo.*/
+data sub;
+input bloco trat mes alt;
+cards;
+1 0 1 1.00
+1 10 1 1.05
+1 20 1 1.08
+2 0 1 1.02
+2 10 1 1.06
+2 20 1 1.09
+1 0 2 1.10
+1 10 2 1.12
+1 20 2 1.14
+2 0 2 1.08
+2 10 2 1.15
+2 20 2 1.18
+1 0 3 1.14
+1 10 3 1.20
+1 20 3 1.22
+2 0 3 1.15
+2 10 3 1.21
+2 20 3 1.23
+;
+proc anova data=sub;
+class bloco trat mes;
+model alt = bloco trat bloco*trat mes bloco*mes mes*trat;
+test h=bloco trat e=bloco*trat;
+test h=mes e=bloco*mes;
+means mes / Tukey e=bloco*mes;
+run; quit;
